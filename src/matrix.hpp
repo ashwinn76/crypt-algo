@@ -304,6 +304,11 @@ public:
     }
 
 
+    /**
+     * @brief transpose operator
+     *
+     * @return transpose of the matrix
+     */
     constexpr auto operator~() const noexcept
     {
         auto transpose{ Matrix<_T, _Columns, _Rows>{} };

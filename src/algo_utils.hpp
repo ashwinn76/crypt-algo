@@ -15,6 +15,13 @@
 
 #include <random>
 
+ /**
+  * @brief Get the char address of the object
+  *
+  * @tparam _T template type
+  * @param object object for retrieving char address
+  * @return char address of the object
+  */
 template <typename _T>
 auto get_char_address(_T&& object)
 {
@@ -24,6 +31,15 @@ auto get_char_address(_T&& object)
 #define IO_INFORMATION(x) get_char_address(x), sizeof(std::remove_cv_t<std::remove_reference_t<decltype(x)>>)
 
 
+/**
+ * @brief check if given value is within provided range
+ *
+ * @tparam _T template type
+ * @param value value to check
+ * @param value1 first bound
+ * @param value2 second bound
+ * @return whether value is in range
+ */
 template <typename _T>
 constexpr auto in_range(const _T& value, const _T& value1, const _T& value2)
 {
@@ -31,39 +47,14 @@ constexpr auto in_range(const _T& value, const _T& value1, const _T& value2)
 }
 
 
-template <auto _Min, decltype(_Min) _Max>
-constexpr auto GetRandomValue() noexcept
-{
-    using _Type = decltype(_Min);
-
-    static_assert(_Min <= _Max, "Min has to be lesser than Max");
-
-    constexpr auto time_str_to_int = [](auto&& char_str)
-    {
-        auto integer{ static_cast<int>(*char_str - 48) * 10 + static_cast<int>(*(char_str + 1) - 48) };
-
-        if (integer <= 0)
-        {
-            integer = 1;
-        }
-
-        return integer;
-    };
-
-    constexpr auto time_str{ __TIME__ };
-
-    constexpr auto hours{ time_str_to_int(time_str) };
-
-    constexpr auto minutes{ time_str_to_int(time_str + 3) };
-
-    constexpr auto seconds{ time_str_to_int(time_str + 6) };
-
-    auto diff{ _Max - _Min };
-
-    return _Min + static_cast<_Type>(diff * (static_cast<double>(hours * minutes * seconds) / (24.0 * 60.0 * 60.0)));
-}
-
-
+/**
+ * @brief Get a random value in the specified range
+ *
+ * @tparam _T type of random value
+ * @param i_min first bound of the range
+ * @param i_max second bound of the range
+ * @return random value
+ */
 template <typename _T> requires (std::is_integral_v<_T> || std::is_enum_v<_T>)
 constexpr auto GetRandomValue(_T i_min, _T i_max)
 {
@@ -88,12 +79,5 @@ constexpr auto GetRandomValue(_T i_min, _T i_max)
 template <typename _T> requires (IsBound<_T>)
 constexpr auto GetRandomValue()
 {
-    if (std::is_constant_evaluated())
-    {
-        return _T{ GetRandomValue<_T::min(), _T::max()>() };
-    }
-    else
-    {
-        return _T{ GetRandomValue(_T::min(), _T::max()) };
-    }
+    return _T{ GetRandomValue(_T::min(), _T::max()) };
 }
