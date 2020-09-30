@@ -258,15 +258,7 @@ TEST(TemplatesTests, RandomValueTests)
     constexpr auto min = -2;
     constexpr auto max = 101;
 
-    constexpr auto val1{ GetRandomValue<min, max>() };
-
-    static_assert(in_range(val1, min, max));
-
     using bound_type = BoundValue<min, max>;
-
-    constexpr auto val2{ GetRandomValue<bound_type>() };
-
-    static_assert(in_range(val2.value(), bound_type::min(), bound_type::max()));
 
     auto val3{ GetRandomValue<bound_type>() };
 
