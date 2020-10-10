@@ -15,15 +15,12 @@ matrix:
 
 before_install:
     - sudo apt-get update -y
-    - sudo apt install gcc-8 g++-8 gcc-9 g++-9 gcc-10 g++-10
-    - sudo apt-get install -y gcovr
-    - pip install --user cpp-coveralls
+    - sudo apt install gcc-10 g++-10
+    - sudo apt-get install -y -qq lcov curl
     - eval "${MATRIX_EVAL}"
 
 
 script:
-  - ./scripts/build.sh Debug -Wall 1
+  - ./scripts/build.sh 20 Debug -Wall ON
   - ./scripts/run.sh
-
-after_success:
-  - coveralls --root . -E ".*gtest.*" -E ".*tst.*" -E ".*CMakeFiles.*"
+  - cd build && cmake --build . --target coveralls

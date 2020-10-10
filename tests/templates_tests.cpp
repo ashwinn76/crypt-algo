@@ -20,23 +20,9 @@
 
 #include "../src/matrix.hpp"
 
-TEST(TemplatesTests, BoundTypeTemplateTests)
-{
-    static_assert(BoundType<int>);
-
-    class TestClass
-    {
-    };
-
-    static_assert(!BoundType<TestClass>);
-}
-
-
 TEST(TemplatesTests, BoundValueTemplateTests)
 {
     static_assert(IsBound<BoundValue<1, 2>>);
-
-    static_assert(is_bound_v<BoundValue<1, 2>>);
 }
 
 
@@ -250,6 +236,20 @@ TEST(TemplatesTests, MatrixTransposeTests)
     constexpr auto expected = matrix_transpose_t<decltype(matrix1)>{ -1.0, 12.9, -0.9, 3.0, -12.78, 900.8 };
 
     static_assert(transpose == expected);
+}
+
+
+TEST(TemplatesTests, MatrixLeftoverElementsTests)
+{
+    constexpr auto matrix1 = Matrix<double, 3, 3>{ -1.0, 3.0, 12.9, -12.78, -0.9, 900.8, 23.4, 0.0, 69.8 };
+
+    constexpr auto leftover = matrix1.leftover_elements(0_ui64, 0_ui64);
+
+    constexpr auto expected_leftover = Matrix<double, 2, 2>{ -0.9, 900.8, 0.0, 69.8 };
+
+    static_assert(leftover == expected_leftover);
+
+    static_assert(expected_leftover.determinant() == -62.82);
 }
 
 
