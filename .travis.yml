@@ -19,7 +19,7 @@ before_install:
 script:
   - mkdir build && cd build && cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_BUILD_TYPE=Release -DCOVERAGE=1 ..
   - cmake --build .
-  - ./tests/tests
+  - ./algo-tests
 
 after_success:
   - coveralls --root . -E ".*gtest.*" -E ".*tests.*" -E ".*CMakeFiles.*"
