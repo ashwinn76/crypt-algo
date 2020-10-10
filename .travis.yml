@@ -22,7 +22,7 @@ before_install:
 
 script:
   - export COVERALLS_SERVICE_NAME=travis-ci
-  - export COVERALLS_REPO_TOKEN=abc12345
+  - export COVERALLS_REPO_TOKEN=SXtgw3ZVFRgvL4VbzaoAIr5HvgfYzV7Y5
   - ./scripts/build.sh 20 Debug -Wall ON
   - ./scripts/run.sh
   - cd build && cmake --build . --target coveralls
