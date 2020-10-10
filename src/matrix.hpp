@@ -12,9 +12,6 @@
 #pragma once
 
 #include <array>
-#include <concepts>
-
-#include <ranges>
 
 #include "type_trait_utils.hpp"
 
