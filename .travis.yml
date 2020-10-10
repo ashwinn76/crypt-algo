@@ -10,20 +10,16 @@ matrix:
         apt:
           sources:
             - ubuntu-toolchain-r-test
-      env:
-         - MATRIX_EVAL="CC=gcc-10 && CXX=g++-10"
 
 before_install:
     - sudo apt-get update -y
     - sudo apt install gcc-10 g++-10
     - sudo apt-get install -y gcovr
     - pip install --user cpp-coveralls
-    - eval "${MATRIX_EVAL}"
-
 
 script:
-  - ./scripts/build.sh 20 Release -Wall 1
-  - ./scripts/run.sh
+  - mkdir build && cd build && CXX=/usr/bin/g++-10 CC=/usr/bin/gcc-10 cmake -DCMAKE_CXX_STANDARD=20 -DCMAKE_BUILD_TYPE=Release -DCOVERAGE=1 ..
+  - ./build/tests/tests
 
 after_success:
-  - coveralls --root . -E ".*gtest.*" -E ".*tst.*" -E ".*CMakeFiles.*"
+  - coveralls --root . -E ".*gtest.*" -E ".*tests.*" -E ".*CMakeFiles.*"
