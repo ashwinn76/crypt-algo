@@ -55,9 +55,10 @@ constexpr auto in_range(const _T& value, const _T& value1, const _T& value2)
  * @param i_max second bound of the range
  * @return random value
  */
-template <typename _T> requires (std::is_integral_v<_T> || std::is_enum_v<_T>)
+template <typename _T>
 constexpr auto GetRandomValue(_T i_min, _T i_max)
 {
+    static_assert(std::is_integral_v<_T> || std::is_enum_v<_T>, "Only integral or enum types are allowed!");
     using my_gen = std::mt19937_64;
 
     auto generator{ my_gen{ static_cast<my_gen::result_type>(std::rand()) } };
@@ -76,8 +77,9 @@ constexpr auto GetRandomValue(_T i_min, _T i_max)
  *
  * @tparam T Template type constrained by IsBound concept.
 */
-template <typename _T> requires (IsBound<_T>)
+template <typename _T>
 constexpr auto GetRandomValue()
 {
+    static_assert(IsBound<_T>, "Type has to be bound!");
     return _T{ GetRandomValue(_T::min(), _T::max()) };
 }
