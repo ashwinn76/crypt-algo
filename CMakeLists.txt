@@ -17,9 +17,11 @@ include(gtest.cmake)
 
 include_directories(src)
 
+file(GLOB_RECURSE COVERALLS_SRC LIST_DIRECTORIES false ${PROJECT_SOURCE_DIR}/src/*.hpp)
+
 if (COVERALLS)
     coveralls_setup(
-        "src/*.hpp"
+        "${COVERALLS_SRC}"
         ${COVERALLS_UPLOAD}
         "${PROJECT_SOURCE_DIR}/coveralls-cmake/cmake")
 endif()
