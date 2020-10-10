@@ -11,7 +11,11 @@
 
 #pragma once
 
+#ifdef __CONCEPTS
 #include <concepts>
+#else
+#include <type_traits>
+#endif
 
 #include "macro_utils.hpp"
 
