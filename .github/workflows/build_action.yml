@@ -24,8 +24,14 @@ jobs:
            sudo apt install gcc-10 g++-10
       shell: bash
 
-    - name: Compile and run tests (Release)
-      run: ./scripts/build.sh Release
-      
-    - name: Compile and run tests (Debug)
-      run: ./scripts/build.sh
+    - name: Compile and run tests (C++20 Release)
+      run: ./scripts/build.sh 20 Release
+
+    - name: Compile and run tests (C++20 Debug)
+      run: ./scripts/build.sh 20
+
+    - name: Compile and run tests (C++17 Release)
+      run: ./scripts/build.sh 17 Release
+
+    - name: Compile and run tests (C++17 Debug)
+      run: ./scripts/build.sh 17
