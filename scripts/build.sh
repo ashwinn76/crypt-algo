@@ -1,10 +1,11 @@
-if [ ! -d "build" ] 
+if [ -d "build" ]
 then
-    mkdir build
+    rm -r build
 fi
 
+mkdir build
 cd build
 
-CC=gcc-10 CXX=g++-10 cmake -DCMAKE_BUILD_TYPE=${1-Debug} -DCMAKE_CXX_FLAGS=${2-"-Wall"} -DCOVERAGE=${3-0} ..
+CC=gcc-10 CXX=g++-10 cmake -DCMAKE_CXX_STANDARD=$1 -DCMAKE_BUILD_TYPE=${2-Debug} -DCMAKE_CXX_FLAGS=${3-"-Wall"} -DCOVERAGE=${4-0} ..
 
-make all
+make -j12 all

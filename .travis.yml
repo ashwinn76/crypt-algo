@@ -15,14 +15,14 @@ matrix:
 
 before_install:
     - sudo apt-get update -y
-    - sudo apt install gcc-8 g++-8 gcc-9 g++-9 gcc-10 g++-10
+    - sudo apt install gcc-10 g++-10
     - sudo apt-get install -y gcovr
     - pip install --user cpp-coveralls
     - eval "${MATRIX_EVAL}"
 
 
 script:
-  - ./scripts/build.sh Debug -Wall 1
+  - ./scripts/build.sh 20 Release -Wall 1
   - ./scripts/run.sh
 
 after_success:

@@ -22,7 +22,7 @@
   * @tparam _Min minimum bound
   * @tparam _Max maximum bound
   */
-template <BoundType auto _Min, decltype(_Min) _Max>
+template <auto _Min, decltype(_Min) _Max>
 class BoundValue
 {
 public:
