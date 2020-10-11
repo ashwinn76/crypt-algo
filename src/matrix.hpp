@@ -422,7 +422,7 @@ public:
         }
         else
         {
-            auto det{ 0_i64 };
+            auto det{ 0.0l };
 
             constexpr auto row_num = 0_ui64;
 
