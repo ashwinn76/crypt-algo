@@ -250,6 +250,20 @@ TEST(TemplatesTests, MatrixLeftoverElementsTests)
     static_assert(leftover == expected_leftover);
 
     static_assert(expected_leftover.determinant() == -62.82);
+
+    static_assert(abs(matrix1.determinant() - 66246.786L) < 1e-5);
+}
+
+
+TEST(TemplatesTests, MatrixTests)
+{
+    static_assert(IsMatrix<Matrix<int, 2, 3>>);
+
+    static_assert(!IsMatrix<int>);
+
+    static_assert(IsSquareMatrix<Matrix<int, 10, 10>>);
+
+    static_assert(!IsSquareMatrix<Matrix<double, 2, 3>>);
 }
 
 
