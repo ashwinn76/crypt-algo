@@ -24,7 +24,7 @@
   * @tparam _T Type of matrix element
   */
 template <uint64_t _Rows, uint64_t _Columns, typename _T = double>
-class Matrix
+class matrix
 {
 private:
     std::array<std::array<_T, _Columns>, _Rows> m_array{};
@@ -43,7 +43,7 @@ public:
      * @brief Constructor for matrix class
      *
      */
-    constexpr explicit Matrix(bool i_identity = true) noexcept
+    constexpr explicit matrix(bool i_identity = true) noexcept
     {
         for (auto row{ 0_ui64 }; row < Rows(); ++row)
         {
@@ -64,7 +64,7 @@ public:
 
 
     template <typename _Iter>
-    constexpr Matrix(_Iter i_begin, _Iter i_end) noexcept
+    constexpr matrix(_Iter i_begin, _Iter i_end) noexcept
     {
         auto idx{ 0_ui64 };
 
@@ -79,22 +79,22 @@ public:
 
 
     /**
-     * @brief Constructor for Matrix class
+     * @brief Constructor for matrix class
      *
      * @param i_list Input initializer list
      */
-    constexpr explicit Matrix(std::initializer_list<value_type>&& i_list) noexcept
-        : Matrix{ std::begin(i_list), std::end(i_list) }
+    constexpr explicit matrix(std::initializer_list<value_type>&& i_list) noexcept
+        : matrix{ std::begin(i_list), std::end(i_list) }
     {
     }
 
 
     /**
-     * @brief Constructor for Matrix class
+     * @brief Constructor for matrix class
      *
      * @param i_arr initializer array
      */
-    constexpr explicit Matrix(std::array<std::array<value_type, _Columns>, _Rows> i_arr) noexcept
+    constexpr explicit matrix(std::array<std::array<value_type, _Columns>, _Rows> i_arr) noexcept
         : m_array{ std::move(i_arr) }
     {
     }
@@ -156,12 +156,12 @@ public:
      * @return Binary operation result
      */
     template <uint64_t _Nr, uint64_t _Nc, typename _Predicate>
-    friend constexpr auto basic_binary_operator(const Matrix& i_lhs, const Matrix<_Nr, _Nc, value_type>& i_rhs, _Predicate&& binary_p) noexcept
+    friend constexpr auto basic_binary_operator(const matrix& i_lhs, const matrix<_Nr, _Nc, value_type>& i_rhs, _Predicate&& binary_p) noexcept
     {
         static_assert(Rows() == _Nr, "Both matrices should have same number of rows!");
         static_assert(Columns() == _Nc, "Both matrices should have same number of columns!");
 
-        auto newMat{ Matrix{} };
+        auto newMat{ matrix{} };
 
         for (auto i{ 0_ui64 }; i < Rows(); i++)
         {
@@ -185,11 +185,11 @@ public:
      * @return Product of multiplication
      */
     template <uint64_t _Nr, uint64_t _Nc>
-    friend constexpr auto operator*(const Matrix& i_lhs, const Matrix<_Nr, _Nc, value_type>& i_rhs) noexcept
+    friend constexpr auto operator*(const matrix& i_lhs, const matrix<_Nr, _Nc, value_type>& i_rhs) noexcept
     {
         static_assert(Columns() == _Nr, "Number of columns of first matrix should be equal to number of rows of second matrix!");
 
-        auto mat{ Matrix<Rows(), _Nc, value_type>{ 0 } };
+        auto mat{ matrix<Rows(), _Nc, value_type>{ 0 } };
 
         for (auto i{ 0_ui64 }; i < Rows(); ++i)
         {
@@ -216,7 +216,7 @@ public:
      * @return Sum of input matrices
      */
     template <uint64_t _Nr, uint64_t _Nc>
-    friend constexpr auto operator+(const Matrix& i_lhs, const Matrix<_Nr, _Nc, value_type>& i_rhs) noexcept
+    friend constexpr auto operator+(const matrix& i_lhs, const matrix<_Nr, _Nc, value_type>& i_rhs) noexcept
     {
         static_assert(Rows() == _Nr, "Both matrices should have same number of rows!");
         static_assert(Columns() == _Nc, "Both matrices should have same number of columns!");
@@ -238,7 +238,7 @@ public:
      * @return Difference of input matrices
      */
     template <uint64_t _Nr, uint64_t _Nc>
-    friend constexpr auto operator-(const Matrix& i_lhs, const Matrix<_Nr, _Nc, value_type>& i_rhs) noexcept
+    friend constexpr auto operator-(const matrix& i_lhs, const matrix<_Nr, _Nc, value_type>& i_rhs) noexcept
     {
         static_assert(Rows() == _Nr, "Both matrices should have same number of rows!");
         static_assert(Columns() == _Nc, "Both matrices should have same number of columns!");
@@ -259,7 +259,7 @@ public:
      * @return matrix after addition
      */
     template <uint64_t _Nr, uint64_t _Nc>
-    constexpr auto operator+=(const Matrix<_Nr, _Nc, value_type>& i_matrix) noexcept
+    constexpr auto operator+=(const matrix<_Nr, _Nc, value_type>& i_matrix) noexcept
     {
         static_assert(Rows() == _Nr, "Both matrices should have same number of rows!");
         static_assert(Columns() == _Nc, "Both matrices should have same number of columns!");
@@ -279,7 +279,7 @@ public:
      * @return resultant matrix
      */
     template <uint64_t _Nr, uint64_t _Nc>
-    constexpr auto operator-=(const Matrix<_Nr, _Nc, value_type>& i_matrix) noexcept
+    constexpr auto operator-=(const matrix<_Nr, _Nc, value_type>& i_matrix) noexcept
     {
         static_assert(Rows() == _Nr, "Both matrices should have same number of rows!");
         static_assert(Columns() == _Nc, "Both matrices should have same number of columns!");
@@ -299,9 +299,9 @@ public:
      * @return resultant matrix
      */
     template <uint64_t _Nr, uint64_t _Nc>
-    constexpr auto operator*=(const Matrix<_Nr, _Nc, value_type>& i_matrix) noexcept
+    constexpr auto operator*=(const matrix<_Nr, _Nc, value_type>& i_matrix) noexcept
     {
-        static_assert(Matrix::IsSquare(), "Original matrix needs to be a square matrix!");
+        static_assert(matrix::IsSquare(), "Original matrix needs to be a square matrix!");
         static_assert(RAW(decltype(i_matrix))::IsSquare(), "Input matrix needs to be a square matrix!");
         static_assert(Rows() == _Nr, "Both matrices need to be of same order!");
 
@@ -322,7 +322,7 @@ public:
      * @return false if matrices are not equal
      */
     template <uint64_t _Nr, uint64_t _Nc>
-    friend constexpr bool operator==(const Matrix& i_lhs, const Matrix<_Nr, _Nc, value_type>& i_rhs) noexcept
+    friend constexpr bool operator==(const matrix& i_lhs, const matrix<_Nr, _Nc, value_type>& i_rhs) noexcept
     {
         if constexpr (Rows() == _Nr && Columns() == _Nc)
         {
@@ -359,7 +359,7 @@ public:
      * @return false if matrices are equal
      */
     template <uint64_t _Nr, uint64_t _Nc>
-    friend constexpr bool operator!=(const Matrix& i_lhs, const Matrix<_Nr, _Nc, value_type>& i_rhs) noexcept
+    friend constexpr bool operator!=(const matrix& i_lhs, const matrix<_Nr, _Nc, value_type>& i_rhs) noexcept
     {
         return !(i_lhs == i_rhs);
     }
@@ -396,7 +396,7 @@ public:
      */
     constexpr auto operator~() const noexcept
     {
-        auto transpose{ Matrix<Columns(), Rows(), value_type>{ false } };
+        auto transpose{ matrix<Columns(), Rows(), value_type>{ false } };
 
         for (auto i{ 0_ui64 }; i < Rows(); ++i)
         {
@@ -448,11 +448,11 @@ public:
      *
      * @param i_row Row to exclude
      * @param i_col Column to exclude
-     * @return Matrix form of leftover elements
+     * @return matrix form of leftover elements
      */
     constexpr auto leftover_elements(uint64_t i_row, uint64_t i_col) const noexcept
     {
-        static_assert(IsSquare() && Rows() > 2_ui64, "Matrix has to be a square matrix of minimum order 3");
+        static_assert(IsSquare() && Rows() > 2_ui64, "matrix has to be a square matrix of minimum order 3");
 
         constexpr auto new_rows = Rows() - 1_ui64;
         constexpr auto new_cols = Columns() - 1_ui64;
@@ -473,7 +473,7 @@ public:
             }
         }
 
-        return Matrix<new_rows, new_cols, value_type>{ leftover_eles.begin(), leftover_eles.end() };
+        return matrix<new_rows, new_cols, value_type>{ leftover_eles.begin(), leftover_eles.end() };
     }
 
 
@@ -484,7 +484,7 @@ public:
      */
     constexpr auto determinant() const noexcept
     {
-        static_assert(Matrix::IsSquare(), "Matrix has to be a square matrix!");
+        static_assert(matrix::IsSquare(), "matrix has to be a square matrix!");
 
         if constexpr (Columns() == 1_ui64)
         {
@@ -521,9 +521,9 @@ public:
      */
     constexpr auto adjoint() const noexcept
     {
-        static_assert(Matrix::IsSquare(), "Matrix has to be a square matrix!");
+        static_assert(matrix::IsSquare(), "matrix has to be a square matrix!");
 
-        auto cofactor_matrix{ Matrix{} };
+        auto cofactor_matrix{ matrix{} };
 
         for (auto row{ 0_ui64 }; row < Rows(); ++row)
         {
@@ -546,7 +546,7 @@ public:
      */
     constexpr auto inverse() const noexcept
     {
-        static_assert(Matrix::IsSquare(), "Matrix has to be a square matrix!");
+        static_assert(matrix::IsSquare(), "matrix has to be a square matrix!");
 
         auto det{ determinant() };
 
@@ -554,12 +554,12 @@ public:
 
         if (det == static_cast<decltype(det)>(0.0))
         {
-            return Matrix{};
+            return matrix{};
         }
 
         if constexpr (Columns() == 1_ui64)
         {
-            return Matrix{ 1.0 / det };
+            return matrix{ 1.0 / det };
         }
         else if constexpr (Columns() == 2_ui64)
         {
@@ -568,13 +568,13 @@ public:
             auto c{ (*this)[1][0] };
             auto d{ (*this)[1][1] };
 
-            return Matrix{ d / det, -b / det, -c / det, a / det };
+            return matrix{ d / det, -b / det, -c / det, a / det };
         }
         else
         {
             auto adj{ adjoint() };
 
-            auto inv{ Matrix{} };
+            auto inv{ matrix{} };
 
             for (auto row{ 0_ui64 }; row < Rows(); ++row)
             {
@@ -594,7 +594,7 @@ public:
 
 
 template <std::uint64_t _Order, typename _T = double>
-constexpr static auto IdentityMatrix = Matrix<_Order, _Order, _T>{};
+constexpr static auto IdentityMatrix = matrix<_Order, _Order, _T>{};
 
 
 /**
@@ -604,7 +604,7 @@ constexpr static auto IdentityMatrix = Matrix<_Order, _Order, _T>{};
  * @tparam _M2 Second matrix type
  */
 template <typename _M1, typename _M2>
-using matrix_product_t = std::enable_if_t<IsMatrix<_M1>&& IsMatrix<_M2> && (_M1::Columns() == _M2::Rows()), Matrix<_M1::Rows(), _M2::Columns(), typename _M1::value_type>>;
+using matrix_product_t = std::enable_if_t<IsMatrix<_M1>&& IsMatrix<_M2> && (_M1::Columns() == _M2::Rows()), matrix<_M1::Rows(), _M2::Columns(), typename _M1::value_type>>;
 
 
 /**
@@ -613,9 +613,9 @@ using matrix_product_t = std::enable_if_t<IsMatrix<_M1>&& IsMatrix<_M2> && (_M1:
  * @tparam _M original matrix type
  */
 template <typename _M>
-using matrix_transpose_t = std::enable_if_t<IsMatrix<_M>, Matrix<_M::Columns(), _M::Rows(), typename _M::value_type>>;
+using matrix_transpose_t = std::enable_if_t<IsMatrix<_M>, matrix<_M::Columns(), _M::Rows(), typename _M::value_type>>;
 
 
-using Matrix2x2 = Matrix<2, 2>;
-using Matrix3x3 = Matrix<3, 3>;
-using Matrix4x4 = Matrix<4, 4>;
+using Matrix2x2 = matrix<2, 2>;
+using Matrix3x3 = matrix<3, 3>;
+using Matrix4x4 = matrix<4, 4>;

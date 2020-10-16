@@ -23,7 +23,7 @@
   * @tparam _Max maximum bound
   */
 template <auto _Min, decltype(_Min) _Max>
-class BoundValue
+class bound_value
 {
 public:
     using value_type = decltype(_Min);
@@ -40,7 +40,7 @@ private:
      * @param i_rhs raw object
      * @return true if raw object and contained object are equal
      */
-    constexpr friend auto operator==(const BoundValue& i_lhs, const value_type& i_rhs) noexcept
+    constexpr friend auto operator==(const bound_value& i_lhs, const value_type& i_rhs) noexcept
     {
         return i_lhs.value() == i_rhs;
     }
@@ -53,7 +53,7 @@ private:
      * @param i_rhs bound value wrapper object
      * @return true if raw object and contained object are equal
      */
-    constexpr friend auto operator==(const value_type& i_lhs, const BoundValue& i_rhs) noexcept
+    constexpr friend auto operator==(const value_type& i_lhs, const bound_value& i_rhs) noexcept
     {
         return i_lhs == i_rhs.value();
     }
@@ -66,7 +66,7 @@ private:
      * @param i_rhs second bound value wrapper object
      * @return true if both objects are equal
      */
-    constexpr friend auto operator==(const BoundValue& i_lhs, const BoundValue& i_rhs) noexcept
+    constexpr friend auto operator==(const bound_value& i_lhs, const bound_value& i_rhs) noexcept
     {
         return i_lhs.value() == i_rhs.value();
     }
@@ -76,7 +76,7 @@ public:
      * @brief Default constructor
      *
      */
-    constexpr BoundValue() noexcept = default;
+    constexpr bound_value() noexcept = default;
 
 
     /**
@@ -84,7 +84,7 @@ public:
      *
      * @param i_value input value
      */
-    constexpr explicit BoundValue(value_type i_value)
+    constexpr explicit bound_value(value_type i_value)
         : m_value{ i_value }
     {
         if (!in_range(m_value, _Min, _Max))
