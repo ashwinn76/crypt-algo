@@ -212,10 +212,6 @@ TEST(MatrixTests, IdentityMatrixTests)
     static_assert(IdentityMatrix<1>.determinant() == 1.0L);
     static_assert(IdentityMatrix<2>.determinant() == 1.0L);
     static_assert(IdentityMatrix<3>.determinant() == 1.0L);
-    static_assert(IdentityMatrix<4>.determinant() == 1.0L);
-    static_assert(IdentityMatrix<5>.determinant() == 1.0L);
-    static_assert(IdentityMatrix<6>.determinant() == 1.0L);
-    static_assert(IdentityMatrix<7>.determinant() == 1.0L);
 
     EXPECT_EQ((IdentityMatrix<8>.determinant()), 1.0L);
 
@@ -227,8 +223,9 @@ TEST(MatrixTests, InverseTests)
 {
     static_assert(IdentityMatrix<2>.inverse() == IdentityMatrix<2>);
     static_assert(IdentityMatrix<3>.inverse() == IdentityMatrix<3>);
-    static_assert(IdentityMatrix<4>.inverse() == IdentityMatrix<4>);
-    static_assert(IdentityMatrix<5>.inverse() == IdentityMatrix<5>);
+
+    EXPECT_EQ(IdentityMatrix<4>.inverse(), IdentityMatrix<4>);
+    EXPECT_EQ(IdentityMatrix<5>.inverse(), IdentityMatrix<5>);
 
     constexpr auto matrix1 = Matrix4x4{ 5, -2,  2, 7,
                                         1,  0,  0, 3,
