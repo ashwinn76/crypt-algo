@@ -16,7 +16,7 @@
 
 TEST(BoundValueTests, BoundValueTemplateTests)
 {
-    static_assert(IsBound<BoundValue<1, 2>>);
+    static_assert(IsBound<bound_value<1, 2>>);
 }
 
 
@@ -42,17 +42,17 @@ TEST(BoundValueTests, InRangeTests)
 
 TEST(BoundValueTests, BoundValueMinMaxTests)
 {
-    static_assert(BoundValue<11, 22>::min() == 11);
-    static_assert(BoundValue<23, 45>::max() == 45);
+    static_assert(bound_value<11, 22>::min() == 11);
+    static_assert(bound_value<23, 45>::max() == 45);
 
-    static_assert(BoundValue<-23, -12>::min() == -23);
-    static_assert(BoundValue<-11, -10>::max() == -10);
+    static_assert(bound_value<-23, -12>::min() == -23);
+    static_assert(bound_value<-11, -10>::max() == -10);
 }
 
 
 TEST(BoundValueTests, BoundValueEqualityTests)
 {
-    using sample_bound = BoundValue<12, 23>;
+    using sample_bound = bound_value<12, 23>;
 
     static_assert(12 == sample_bound{ 12 });
     static_assert(sample_bound{ 12 } == 12);
@@ -70,9 +70,9 @@ TEST(BoundValueTests, RandomValueTests)
     constexpr auto min = -2;
     constexpr auto max = 101;
 
-    using bound_type = BoundValue<min, max>;
+    using bound_type = bound_value<min, max>;
 
-    auto val3{ GetRandomValue<bound_type>() };
+    auto val3{ get_random_value<bound_type>() };
 
     EXPECT_TRUE(in_range(val3.value(), bound_type::min(), bound_type::max()));
 }

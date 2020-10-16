@@ -19,7 +19,7 @@ static const auto key = std::string{ "this_is_a_random_encryptionkey__" };
 
 TEST(EncryptionKeyTests, EnhancedKeyCreationTests)
 {
-    auto encryptionKey{ Encryption::CEncryptionKey{ key } };
+    auto encryptionKey{ encryption::encryption_key{ key } };
 
     EXPECT_NE(key, encryptionKey.string());
 }
@@ -27,7 +27,7 @@ TEST(EncryptionKeyTests, EnhancedKeyCreationTests)
 
 TEST(EncryptionKeyTests, BasicKeyCreationTests)
 {
-    auto encryptionKey{ Encryption::CEncryptionKey{ key, false } };
+    auto encryptionKey{ encryption::encryption_key{ key, false } };
 
     EXPECT_EQ(key, encryptionKey.string());
 }
@@ -37,10 +37,10 @@ TEST(EncryptionKeyTests, EnhancementIOTests)
 {
     auto ss{ std::stringstream{} };
 
-    auto test_enhancement{ Encryption::SEncryptionKeyEdit{ 20_ui64, 's' } };
+    auto test_enhancement{ encryption::encryption_edit_s{ 20_ui64, 's' } };
     ss << test_enhancement;
 
-    auto expected_enhancement{ Encryption::SEncryptionKeyEdit{} };
+    auto expected_enhancement{ encryption::encryption_edit_s{} };
     ss >> expected_enhancement;
 
     EXPECT_EQ(test_enhancement, expected_enhancement);

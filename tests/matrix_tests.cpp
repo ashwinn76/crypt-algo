@@ -23,27 +23,27 @@
 
 TEST(MatrixTests, MatrixTemplatesTests)
 {
-    using product_t_1 = matrix_product_t<Matrix<2, 6>, Matrix<6, 3>>;
+    using product_t_1 = matrix_product_t<matrix<2, 6>, matrix<6, 3>>;
 
-    static_assert(std::is_same_v<product_t_1, Matrix<2, 3>>);
+    static_assert(std::is_same_v<product_t_1, matrix<2, 3>>);
 
-    static_assert(std::is_same_v<matrix_transpose_t<Matrix<2, 3>>, Matrix<3, 2>>);
+    static_assert(std::is_same_v<matrix_transpose_t<matrix<2, 3>>, matrix<3, 2>>);
 }
 
 
 TEST(MatrixTests, MatrixEqualityTests)
 {
-    constexpr auto firstMatrix = Matrix<2, 2>{ -1, -4, 6, 9 };
+    constexpr auto firstMatrix = matrix<2, 2>{ -1, -4, 6, 9 };
 
     constexpr auto sameAsFirstMatrix = firstMatrix;
 
     static_assert(firstMatrix == sameAsFirstMatrix);
 
-    constexpr auto defaultMatrix = Matrix<2, 2>{ false };
+    constexpr auto defaultMatrix = matrix<2, 2>{ false };
 
     static_assert(firstMatrix != defaultMatrix);
 
-    auto mat = Matrix<3, 3>
+    auto mat = matrix<3, 3>
     {
         -2, -3, 1,
          4, -6, 6,
@@ -97,7 +97,7 @@ TEST(MatrixTests, MatrixArithmeticTests)
 
 TEST(MatrixTests, MatrixMultiplicationTests)
 {
-    constexpr auto matrix1 = Matrix<4, 3>
+    constexpr auto matrix1 = matrix<4, 3>
     {
          1,  2,  3,
         53,  6, 45,
@@ -105,7 +105,7 @@ TEST(MatrixTests, MatrixMultiplicationTests)
          2, 32,  3,
     };
 
-    constexpr auto matrix2 = Matrix<3, 6>
+    constexpr auto matrix2 = matrix<3, 6>
     {
         23, 3, 4, 54, 236,  8,
         56, 4, 3, 78, 711,  8,
@@ -151,7 +151,7 @@ TEST(MatrixTests, MatrixMultiplicationTests)
 
 TEST(MatrixTests, MatrixTransposeTests)
 {
-    constexpr auto matrix1 = Matrix<3, 2>{ -1.0, 3.0, 12.9, -12.78, -0.9, 900.8 };
+    constexpr auto matrix1 = matrix<3, 2>{ -1.0, 3.0, 12.9, -12.78, -0.9, 900.8 };
 
     constexpr auto transpose = ~matrix1;
 
@@ -179,13 +179,13 @@ TEST(MatrixTests, MatrixLeftoverElementsTests)
 
 TEST(MatrixTests, MatrixTests)
 {
-    static_assert(IsMatrix<Matrix<2, 3>>);
+    static_assert(IsMatrix<matrix<2, 3>>);
 
     static_assert(!IsMatrix<int>);
 
-    static_assert(Matrix<10, 10>::IsSquare());
+    static_assert(matrix<10, 10>::IsSquare());
 
-    static_assert(!Matrix<2, 3>::IsSquare());
+    static_assert(!matrix<2, 3>::IsSquare());
 }
 
 

@@ -16,7 +16,7 @@
 
 #include "algo_utils.hpp"
 
-namespace Encryption
+namespace encryption
 {
 
 namespace
@@ -27,9 +27,9 @@ constexpr auto EncryptionHelperKey = std::string_view{ "I8Cdcw3No4PMlcoHNT5rc8KJ
 
 constexpr auto IdealKeySize = 32_ui64;
 
-auto GetEnhancementCharacter()
+auto get_additional_character()
 {
-    auto random_pos{ GetRandomValue(0_ui64, EncryptionHelperKey.size()) };
+    auto random_pos{ get_random_value(0_ui64, EncryptionHelperKey.size()) };
 
     return EncryptionHelperKey.at(random_pos);
 }
@@ -37,35 +37,35 @@ auto GetEnhancementCharacter()
 }
 
 /**
- * @struct SEncryptionKeyEdit struct
+ * @struct encryption_edit_s struct
  *
  * @brief Struct storing information about the enhancement done to the encryption key.
  */
-struct SEncryptionKeyEdit
+struct encryption_edit_s
 {
     uint64_t Position{ std::string::npos };
     char Character{};
 
     /**
-     * @brief Write out SEncryptionKeyEdit object to a stream.
+     * @brief Write out encryption_edit_s object to a stream.
      *
      * @param io_stream stream object to be written to
      * @param i_edit Edit information
      * @return std::ostream&
      */
-    friend std::ostream& operator<<(std::ostream& io_stream, const SEncryptionKeyEdit& i_edit)
+    friend std::ostream& operator<<(std::ostream& io_stream, const encryption_edit_s& i_edit)
     {
         return io_stream.write(IO_INFORMATION(i_edit));
     }
 
     /**
-     * @brief Read in SEncryptionKeyEdit object from a stream.
+     * @brief Read in encryption_edit_s object from a stream.
      *
      * @param io_stream stream object to be read from
      * @param io_edit Edit information will be read into this object
      * @return std::istream&
      */
-    friend std::istream& operator>>(std::istream& io_stream, SEncryptionKeyEdit& io_edit)
+    friend std::istream& operator>>(std::istream& io_stream, encryption_edit_s& io_edit)
     {
         return io_stream.read(IO_INFORMATION(io_edit));
     }
@@ -73,44 +73,44 @@ struct SEncryptionKeyEdit
 private:
 
     /**
-     * @brief Equality comparison for SEncryptionKeyEdit objects.
+     * @brief Equality comparison for encryption_edit_s objects.
      *
      * @param i_lhs left hand operand
      * @param i_rhs right hand operand
      * @return true if objects are equal
      * @return false is objects are not equal
      */
-    friend constexpr bool operator==(const SEncryptionKeyEdit& i_lhs, const SEncryptionKeyEdit& i_rhs) noexcept
+    friend constexpr bool operator==(const encryption_edit_s& i_lhs, const encryption_edit_s& i_rhs) noexcept
     {
         return i_lhs.Position == i_rhs.Position && i_lhs.Character == i_rhs.Character;
     }
 
     /**
-     * @brief Inequality comparison for SEncryptionKeyEdit objects.
+     * @brief Inequality comparison for encryption_edit_s objects.
      *
      * @param i_lhs left hand operand
      * @param i_rhs right hand operand
      * @return true if objects are unequal
      * @return false is objects are equal
      */
-    friend constexpr bool operator!=(const SEncryptionKeyEdit& i_lhs, const SEncryptionKeyEdit& i_rhs) noexcept
+    friend constexpr bool operator!=(const encryption_edit_s& i_lhs, const encryption_edit_s& i_rhs) noexcept
     {
         return !(i_lhs == i_rhs);
     }
 };
 
 
-constexpr auto NoEncryptionKeyEdit = SEncryptionKeyEdit{ std::numeric_limits<uint64_t>::max(), '\0' };
+constexpr auto no_key_edit = encryption_edit_s{};
 
 
 
 /**
- * @class CEncryptionKey class
+ * @class encryption_key class
  *
  * @brief class to hold the encryption key specified by the user, and apply enhancements if required.
  *
  */
-class CEncryptionKey
+class encryption_key
 {
 public:
     /**
@@ -120,7 +120,7 @@ public:
      *
      * @param i_enhance Flag to enhance the key
      */
-    explicit CEncryptionKey(std::string i_key, bool i_enhance = true)
+    explicit encryption_key(std::string i_key, bool i_enhance = true)
         : m_originalKey{ std::move(i_key) }
     {
         if (m_originalKey.size() < IdealKeySize)
@@ -130,7 +130,7 @@ public:
 
         if (i_enhance)
         {
-            m_editType = { GetRandomValue(0_ui64, IdealKeySize), GetEnhancementCharacter() };
+            m_editType = { get_random_value(0_ui64, IdealKeySize), get_additional_character() };
         }
     }
 
@@ -152,7 +152,7 @@ public:
     }
 
 private:
-    SEncryptionKeyEdit m_editType{ NoEncryptionKeyEdit };
+    encryption_edit_s m_editType{ no_key_edit };
 
     std::string m_originalKey{};
 };
