@@ -15,6 +15,7 @@
 #include <array>
 
 #include "macro_utils.hpp"
+#include "matrix.hpp"
 
 namespace Encryption
 {
@@ -29,7 +30,7 @@ enum class AESType
 namespace
 {
 
-constexpr auto s_box = std::array<uint8_t, 256_ui64>
+constexpr auto s_box = Matrix<std::int32_t, 16, 16>
 {
         0x63, 0x7C, 0x77, 0x7B, 0xF2, 0x6B, 0x6F, 0xC5, 0x30, 0x01, 0x67, 0x2B, 0xFE, 0xD7, 0xAB, 0x76,
         0xCA, 0x82, 0xC9, 0x7D, 0xFA, 0x59, 0x47, 0xF0, 0xAD, 0xD4, 0xA2, 0xAF, 0x9C, 0xA4, 0x72, 0xC0,
@@ -49,6 +50,8 @@ constexpr auto s_box = std::array<uint8_t, 256_ui64>
         0x8C, 0xA1, 0x89, 0x0D, 0xBF, 0xE6, 0x42, 0x68, 0x41, 0x99, 0x2D, 0x0F, 0xB0, 0x54, 0xBB, 0x16
 };
 
+constexpr auto s_box_inv = s_box.inverse();
+
 struct SParameters
 {
     uint64_t KeyLength{ 0_ui64 };
@@ -60,7 +63,7 @@ struct SParameters
 
 
 template <Encryption::AESType _EncryptType>
-consteval auto GetEncryptionParameters() noexcept
+__CONSTEVAL auto GetEncryptionParameters() noexcept
 {
     if constexpr (_EncryptType == Encryption::AESType::AES128)
     {

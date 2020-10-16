@@ -59,22 +59,6 @@ constexpr auto inline IsBound = is_bound<RAW(_T)>::value;
 #ifdef __CONCEPTS
 
 /**
- * @brief Constraint to check if type can be stored in a matrix
- *
- * @tparam _T Type to check
- */
-template <typename _T>
-concept MatrixElement = requires(_T x)
-{
-    std::default_initializable<RAW(_T)>;
-
-    { x + x } -> std::same_as<RAW(_T)>;
-    { x - x } -> std::same_as<RAW(_T)>;
-    { x * x } -> std::same_as<RAW(_T)>;
-};
-
-
-/**
  * @brief Constraint to check if type is matrix
  *
  * @tparam _T Type to check
@@ -82,7 +66,7 @@ concept MatrixElement = requires(_T x)
 template <typename _T>
 concept IsMatrix = requires (_T x)
 {
-    MatrixElement<typename RAW(_T)::value_type>;
+    std::is_arithmetic_v<typename RAW(_T)::value_type>;
 
     { RAW(_T)::Rows() } noexcept -> std::same_as<uint64_t>;
     { RAW(_T)::Columns() } noexcept -> std::same_as<uint64_t>;
@@ -91,37 +75,7 @@ concept IsMatrix = requires (_T x)
     { x - x } -> std::convertible_to<_T>;
 };
 
-
-/**
- * @brief Constraint to check if matrix is square
- * 
- * @tparam _T Type to check
- */
-template <typename _T>
-concept IsSquareMatrix = IsMatrix<RAW(_T)> && (RAW(_T)::Rows() == RAW(_T)::Columns());
-
 #else
-
-
-template <typename, typename = std::void_t<>, typename = std::void_t<>, typename = std::void_t<>, typename = std::void_t<>>
-struct is_matrix_element : std::false_type{};
-
-template <typename _T>
-struct is_matrix_element<
-    _T,
-    std::enable_if_t<std::is_default_constructible_v<RAW(_T)>>,
-    std::enable_if_t<std::is_same_v<decltype(std::declval<RAW(_T)>() + std::declval<RAW(_T)>()), RAW(_T)>>,
-    std::enable_if_t<std::is_same_v<decltype(std::declval<RAW(_T)>() - std::declval<RAW(_T)>()), RAW(_T)>>,
-    std::enable_if_t<std::is_same_v<decltype(std::declval<RAW(_T)>() * std::declval<RAW(_T)>()), RAW(_T)>>> : std::true_type{};
-
-/**
- * @brief Type trait to check if type can be stored in a matrix
- * 
- * @tparam _T Type to check
- */
-template <typename _T>
-constexpr auto inline MatrixElement = is_matrix_element<RAW(_T)>::value;
-
 
 template <typename _T, typename = std::void_t<>, typename = std::void_t<>, typename = std::void_t<>, typename = std::void_t<>, typename = std::void_t<>>
 struct is_matrix_type : std::false_type{};
@@ -129,7 +83,7 @@ struct is_matrix_type : std::false_type{};
 template <typename _T>
 struct is_matrix_type<
     _T,
-    std::enable_if_t<MatrixElement<typename RAW(_T)::value_type>>,
+    std::enable_if_t<std::is_arithmetic_v<typename RAW(_T)::value_type>>,
     std::enable_if_t<std::is_same_v<std::invoke_result_t<decltype(&(RAW(_T)::Rows))>, uint64_t> && noexcept(RAW(_T)::Rows())>,
     std::enable_if_t<std::is_same_v<std::invoke_result_t<decltype(&(RAW(_T)::Columns))>, uint64_t> && noexcept(RAW(_T)::Columns())>,
     std::enable_if_t<std::is_convertible_v<decltype(std::declval<RAW(_T)>() + std::declval<RAW(_T)>()), _T>>,
@@ -142,13 +96,5 @@ struct is_matrix_type<
  */
 template <typename _T>
 constexpr auto inline IsMatrix = is_matrix_type<RAW(_T)>::value;
-
-/**
- * @brief Type trait to check if matrix is square
- * 
- * @tparam _T Type to check
- */
-template <typename _T>
-constexpr auto inline IsSquareMatrix = IsMatrix<RAW(_T)> && (RAW(_T)::Columns() == RAW(_T)::Rows());
 
 #endif
