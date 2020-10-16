@@ -20,86 +20,8 @@
 
 #include "../src/matrix.hpp"
 
-TEST(TemplatesTests, BoundValueTemplateTests)
-{
-    static_assert(IsBound<BoundValue<1, 2>>);
-}
 
-
-TEST(TemplatesTests, NumericConverterTests_64bit)
-{
-    static_assert(std::is_same_v<decltype(2_ui64), std::uint64_t>);
-    static_assert(std::is_same_v<decltype(1_i64), std::int64_t>);
-}
-
-
-TEST(TemplatesTests, NumericConverterTests_32bit)
-{
-    static_assert(std::is_same_v<decltype(34_ui32), std::uint32_t>);
-    static_assert(std::is_same_v<decltype(23_i32), std::int32_t>);
-}
-
-
-TEST(TemplatesTests, NumericConverterTests_16bit)
-{
-    static_assert(std::is_same_v<decltype(123_ui16), std::uint16_t>);
-    static_assert(std::is_same_v<decltype(543_i16), std::int16_t>);
-}
-
-
-TEST(TemplatesTests, NumericConverterTests_8bit)
-{
-    static_assert(std::is_same_v<decltype(11_ui8), std::uint8_t>);
-    static_assert(std::is_same_v<decltype(12_i8), std::int8_t>);
-}
-
-
-TEST(TemplatesTests, NotInRangeTests)
-{
-    static_assert(!in_range(1, 2, 3));
-    static_assert(!in_range(1, 3, 2));
-}
-
-
-TEST(TemplatesTests, InRangeTests)
-{
-    static_assert(in_range(1, 0, 2));
-    static_assert(in_range(1, 2, 0));
-
-    static_assert(in_range(23, -90, 89));
-    static_assert(in_range(23, 89, -90));
-
-    static_assert(in_range(-1, 0, -2));
-    static_assert(in_range(-1, -2, 0));
-}
-
-
-TEST(TemplatesTests, BoundValueMinMaxTests)
-{
-    static_assert(BoundValue<11, 22>::min() == 11);
-    static_assert(BoundValue<23, 45>::max() == 45);
-
-    static_assert(BoundValue<-23, -12>::min() == -23);
-    static_assert(BoundValue<-11, -10>::max() == -10);
-}
-
-
-TEST(TemplatesTests, BoundValueEqualityTests)
-{
-    using sample_bound = BoundValue<12, 23>;
-
-    static_assert(12 == sample_bound{ 12 });
-    static_assert(sample_bound{ 12 } == 12);
-
-    static_assert(sample_bound{ 23 } == sample_bound{ 23 });
-    static_assert(!(sample_bound{ 20 } == sample_bound{ 21 }));
-
-    EXPECT_THROW(sample_bound{ 1 }, std::out_of_range);
-    EXPECT_NO_THROW(sample_bound{ 22 });
-}
-
-
-TEST(TemplatesTests, MatrixTemplatesTests)
+TEST(MatrixTests, MatrixTemplatesTests)
 {
     using product_t_1 = matrix_product_t<Matrix<int, 2, 6>, Matrix<int, 6, 3>>;
 
@@ -109,7 +31,7 @@ TEST(TemplatesTests, MatrixTemplatesTests)
 }
 
 
-TEST(TemplatesTests, MatrixEqualityTests)
+TEST(MatrixTests, MatrixEqualityTests)
 {
     constexpr auto firstMatrix = Matrix<int, 2, 2>{ -1, -4, 6, 9 };
 
@@ -117,7 +39,7 @@ TEST(TemplatesTests, MatrixEqualityTests)
 
     static_assert(firstMatrix == sameAsFirstMatrix);
 
-    constexpr auto defaultMatrix = Matrix<int, 2, 2>{};
+    constexpr auto defaultMatrix = Matrix<int, 2, 2>{ false };
 
     static_assert(firstMatrix != defaultMatrix);
 
@@ -136,19 +58,19 @@ TEST(TemplatesTests, MatrixEqualityTests)
 }
 
 
-TEST(TemplatesTests, MatrixArithmeticTests)
+TEST(MatrixTests, MatrixArithmeticTests)
 {
     constexpr auto firstMatrix = Matrix<int, 2, 2>{ -1, -4, 6, 9 };
 
     constexpr auto sameAsFirstMatrix = firstMatrix;
 
-    constexpr auto defaultMatrix = Matrix<int, 2, 2>{};
+    constexpr auto defaultMatrix = Matrix<int, 2, 2>{ false };
 
     constexpr auto shouldBeAllZerosMatrix = firstMatrix - sameAsFirstMatrix;
 
     static_assert(defaultMatrix == shouldBeAllZerosMatrix);
 
-    constexpr auto shouldBeSameAsFirstMatrix = firstMatrix + decltype(firstMatrix){};
+    constexpr auto shouldBeSameAsFirstMatrix = firstMatrix + decltype(firstMatrix){ false };
 
     static_assert(firstMatrix == shouldBeSameAsFirstMatrix);
 
@@ -162,18 +84,18 @@ TEST(TemplatesTests, MatrixArithmeticTests)
 
     auto sameAsFirstMat = firstMat;
 
-    firstMat += decltype(firstMat){};
+    firstMat += decltype(firstMat){ false };
 
     EXPECT_TRUE(firstMat == sameAsFirstMat);
 
     firstMat -= sameAsFirstMat;
 
-    EXPECT_TRUE(firstMat == decltype(firstMat){});
+    EXPECT_TRUE(firstMat == decltype(firstMat){ false });
 
 }
 
 
-TEST(TemplatesTests, MatrixMultiplicationTests)
+TEST(MatrixTests, MatrixMultiplicationTests)
 {
     constexpr auto matrix1 = Matrix<int, 4, 3>
     {
@@ -227,7 +149,7 @@ TEST(TemplatesTests, MatrixMultiplicationTests)
 }
 
 
-TEST(TemplatesTests, MatrixTransposeTests)
+TEST(MatrixTests, MatrixTransposeTests)
 {
     constexpr auto matrix1 = Matrix<double, 3, 2>{ -1.0, 3.0, 12.9, -12.78, -0.9, 900.8 };
 
@@ -239,7 +161,7 @@ TEST(TemplatesTests, MatrixTransposeTests)
 }
 
 
-TEST(TemplatesTests, MatrixLeftoverElementsTests)
+TEST(MatrixTests, MatrixLeftoverElementsTests)
 {
     constexpr auto matrix1 = Matrix<double, 3, 3>{ -1.0, 3.0, 12.9, -12.78, -0.9, 900.8, 23.4, 0.0, 69.8 };
 
@@ -255,26 +177,47 @@ TEST(TemplatesTests, MatrixLeftoverElementsTests)
 }
 
 
-TEST(TemplatesTests, MatrixTests)
+TEST(MatrixTests, MatrixTests)
 {
     static_assert(IsMatrix<Matrix<int, 2, 3>>);
 
     static_assert(!IsMatrix<int>);
 
-    static_assert(IsSquareMatrix<Matrix<int, 10, 10>>);
+    static_assert(Matrix<int, 10, 10>::IsSquare());
 
-    static_assert(!IsSquareMatrix<Matrix<double, 2, 3>>);
+    static_assert(!Matrix<double, 2, 3>::IsSquare());
 }
 
 
-TEST(TemplatesTests, RandomValueTests)
+TEST(MatrixTests, MatrixAdjointTests)
 {
-    constexpr auto min = -2;
-    constexpr auto max = 101;
+    constexpr auto matrix1 = Matrix<int, 4, 4>{ 5, -2,  2, 7,
+                                                1,  0,  0, 3,
+                                               -3,  1,  5, 0,
+                                                3, -1, -9, 4, };
 
-    using bound_type = BoundValue<min, max>;
+    constexpr auto adjoint{ matrix1.adjoint() };
 
-    auto val3{ GetRandomValue<bound_type>() };
+    constexpr auto expected_adjoint = Matrix<int, 4, 4>{ -12,   76, -60, -36,
+                                                         -56,  208, -82, -58,
+                                                           4,    4,  -2, -10,
+                                                           4,    4,  20,  12, };
 
-    EXPECT_TRUE(in_range(val3.value(), bound_type::min(), bound_type::max()));
+    static_assert(adjoint == expected_adjoint);
+}
+
+
+TEST(MatrixTests, IdentityMatrixTests)
+{
+    static_assert(IdentityMatrix<int, 1>.determinant() == 1.0L);
+    static_assert(IdentityMatrix<int, 2>.determinant() == 1.0L);
+    static_assert(IdentityMatrix<int, 3>.determinant() == 1.0L);
+    static_assert(IdentityMatrix<int, 4>.determinant() == 1.0L);
+    static_assert(IdentityMatrix<int, 5>.determinant() == 1.0L);
+    static_assert(IdentityMatrix<int, 6>.determinant() == 1.0L);
+    static_assert(IdentityMatrix<int, 7>.determinant() == 1.0L);
+
+    EXPECT_EQ((IdentityMatrix<int, 8>.determinant()), 1.0L);
+
+    EXPECT_EQ((IdentityMatrix<int, 9>.determinant()), 1.0L);
 }
