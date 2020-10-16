@@ -23,27 +23,27 @@
 
 TEST(MatrixTests, MatrixTemplatesTests)
 {
-    using product_t_1 = matrix_product_t<Matrix<int, 2, 6>, Matrix<int, 6, 3>>;
+    using product_t_1 = matrix_product_t<Matrix<2, 6>, Matrix<6, 3>>;
 
-    static_assert(std::is_same_v<product_t_1, Matrix<int, 2, 3>>);
+    static_assert(std::is_same_v<product_t_1, Matrix<2, 3>>);
 
-    static_assert(std::is_same_v<matrix_transpose_t<Matrix<double, 2, 3>>, Matrix<double, 3, 2>>);
+    static_assert(std::is_same_v<matrix_transpose_t<Matrix<2, 3>>, Matrix<3, 2>>);
 }
 
 
 TEST(MatrixTests, MatrixEqualityTests)
 {
-    constexpr auto firstMatrix = Matrix<int, 2, 2>{ -1, -4, 6, 9 };
+    constexpr auto firstMatrix = Matrix<2, 2>{ -1, -4, 6, 9 };
 
     constexpr auto sameAsFirstMatrix = firstMatrix;
 
     static_assert(firstMatrix == sameAsFirstMatrix);
 
-    constexpr auto defaultMatrix = Matrix<int, 2, 2>{ false };
+    constexpr auto defaultMatrix = Matrix<2, 2>{ false };
 
     static_assert(firstMatrix != defaultMatrix);
 
-    auto mat = Matrix<int, 3, 3>
+    auto mat = Matrix<3, 3>
     {
         -2, -3, 1,
          4, -6, 6,
@@ -60,11 +60,11 @@ TEST(MatrixTests, MatrixEqualityTests)
 
 TEST(MatrixTests, MatrixArithmeticTests)
 {
-    constexpr auto firstMatrix = Matrix<int, 2, 2>{ -1, -4, 6, 9 };
+    constexpr auto firstMatrix = Matrix2x2{ -1, -4, 6, 9 };
 
     constexpr auto sameAsFirstMatrix = firstMatrix;
 
-    constexpr auto defaultMatrix = Matrix<int, 2, 2>{ false };
+    constexpr auto defaultMatrix = Matrix2x2{ false };
 
     constexpr auto shouldBeAllZerosMatrix = firstMatrix - sameAsFirstMatrix;
 
@@ -75,7 +75,7 @@ TEST(MatrixTests, MatrixArithmeticTests)
     static_assert(firstMatrix == shouldBeSameAsFirstMatrix);
 
 
-    auto firstMat = Matrix<int, 3, 3>
+    auto firstMat = Matrix3x3
     {
         -2, -3, 1,
          4, -6, 6,
@@ -97,7 +97,7 @@ TEST(MatrixTests, MatrixArithmeticTests)
 
 TEST(MatrixTests, MatrixMultiplicationTests)
 {
-    constexpr auto matrix1 = Matrix<int, 4, 3>
+    constexpr auto matrix1 = Matrix<4, 3>
     {
          1,  2,  3,
         53,  6, 45,
@@ -105,7 +105,7 @@ TEST(MatrixTests, MatrixMultiplicationTests)
          2, 32,  3,
     };
 
-    constexpr auto matrix2 = Matrix<int, 3, 6>
+    constexpr auto matrix2 = Matrix<3, 6>
     {
         23, 3, 4, 54, 236,  8,
         56, 4, 3, 78, 711,  8,
@@ -125,13 +125,13 @@ TEST(MatrixTests, MatrixMultiplicationTests)
     static_assert(product == expected);
 
 
-    auto mat1 = Matrix<int, 2, 2>
+    auto mat1 = Matrix2x2
     {
         3, 3,
         5, 3,
     };
 
-    auto mat2 = Matrix<int, 2, 2>
+    auto mat2 = Matrix2x2
     {
         42, 46,
         54, 68,
@@ -139,7 +139,7 @@ TEST(MatrixTests, MatrixMultiplicationTests)
 
     mat1 *= mat2;
 
-    auto exp = Matrix<int, 2, 2>
+    auto exp = Matrix2x2
     {
         288, 342,
         372, 434,
@@ -151,7 +151,7 @@ TEST(MatrixTests, MatrixMultiplicationTests)
 
 TEST(MatrixTests, MatrixTransposeTests)
 {
-    constexpr auto matrix1 = Matrix<double, 3, 2>{ -1.0, 3.0, 12.9, -12.78, -0.9, 900.8 };
+    constexpr auto matrix1 = Matrix<3, 2>{ -1.0, 3.0, 12.9, -12.78, -0.9, 900.8 };
 
     constexpr auto transpose = ~matrix1;
 
@@ -163,11 +163,11 @@ TEST(MatrixTests, MatrixTransposeTests)
 
 TEST(MatrixTests, MatrixLeftoverElementsTests)
 {
-    constexpr auto matrix1 = Matrix<double, 3, 3>{ -1.0, 3.0, 12.9, -12.78, -0.9, 900.8, 23.4, 0.0, 69.8 };
+    constexpr auto matrix1 = Matrix3x3{ -1.0, 3.0, 12.9, -12.78, -0.9, 900.8, 23.4, 0.0, 69.8 };
 
     constexpr auto leftover = matrix1.leftover_elements(0_ui64, 0_ui64);
 
-    constexpr auto expected_leftover = Matrix<double, 2, 2>{ -0.9, 900.8, 0.0, 69.8 };
+    constexpr auto expected_leftover = Matrix2x2{ -0.9, 900.8, 0.0, 69.8 };
 
     static_assert(leftover == expected_leftover);
 
@@ -179,29 +179,29 @@ TEST(MatrixTests, MatrixLeftoverElementsTests)
 
 TEST(MatrixTests, MatrixTests)
 {
-    static_assert(IsMatrix<Matrix<int, 2, 3>>);
+    static_assert(IsMatrix<Matrix<2, 3>>);
 
     static_assert(!IsMatrix<int>);
 
-    static_assert(Matrix<int, 10, 10>::IsSquare());
+    static_assert(Matrix<10, 10>::IsSquare());
 
-    static_assert(!Matrix<double, 2, 3>::IsSquare());
+    static_assert(!Matrix<2, 3>::IsSquare());
 }
 
 
 TEST(MatrixTests, MatrixAdjointTests)
 {
-    constexpr auto matrix1 = Matrix<int, 4, 4>{ 5, -2,  2, 7,
-                                                1,  0,  0, 3,
-                                               -3,  1,  5, 0,
-                                                3, -1, -9, 4, };
+    constexpr auto matrix1 = Matrix4x4{ 5, -2,  2, 7,
+                                        1,  0,  0, 3,
+                                       -3,  1,  5, 0,
+                                        3, -1, -9, 4, };
 
     constexpr auto adjoint{ matrix1.adjoint() };
 
-    constexpr auto expected_adjoint = Matrix<int, 4, 4>{ -12,   76, -60, -36,
-                                                         -56,  208, -82, -58,
-                                                           4,    4,  -2, -10,
-                                                           4,    4,  20,  12, };
+    constexpr auto expected_adjoint = Matrix4x4{ -12,   76, -60, -36,
+                                                 -56,  208, -82, -58,
+                                                   4,    4,  -2, -10,
+                                                   4,    4,  20,  12, };
 
     static_assert(adjoint == expected_adjoint);
 }
@@ -209,15 +209,43 @@ TEST(MatrixTests, MatrixAdjointTests)
 
 TEST(MatrixTests, IdentityMatrixTests)
 {
-    static_assert(IdentityMatrix<int, 1>.determinant() == 1.0L);
-    static_assert(IdentityMatrix<int, 2>.determinant() == 1.0L);
-    static_assert(IdentityMatrix<int, 3>.determinant() == 1.0L);
-    static_assert(IdentityMatrix<int, 4>.determinant() == 1.0L);
-    static_assert(IdentityMatrix<int, 5>.determinant() == 1.0L);
-    static_assert(IdentityMatrix<int, 6>.determinant() == 1.0L);
-    static_assert(IdentityMatrix<int, 7>.determinant() == 1.0L);
+    static_assert(IdentityMatrix<1>.determinant() == 1.0L);
+    static_assert(IdentityMatrix<2>.determinant() == 1.0L);
+    static_assert(IdentityMatrix<3>.determinant() == 1.0L);
+    static_assert(IdentityMatrix<4>.determinant() == 1.0L);
+    static_assert(IdentityMatrix<5>.determinant() == 1.0L);
+    static_assert(IdentityMatrix<6>.determinant() == 1.0L);
+    static_assert(IdentityMatrix<7>.determinant() == 1.0L);
 
-    EXPECT_EQ((IdentityMatrix<int, 8>.determinant()), 1.0L);
+    EXPECT_EQ((IdentityMatrix<8>.determinant()), 1.0L);
 
-    EXPECT_EQ((IdentityMatrix<int, 9>.determinant()), 1.0L);
+    EXPECT_EQ((IdentityMatrix<9>.determinant()), 1.0L);
+}
+
+
+TEST(MatrixTests, InverseTests)
+{
+    static_assert(IdentityMatrix<2>.inverse() == IdentityMatrix<2>);
+    static_assert(IdentityMatrix<3>.inverse() == IdentityMatrix<3>);
+    static_assert(IdentityMatrix<4>.inverse() == IdentityMatrix<4>);
+    static_assert(IdentityMatrix<5>.inverse() == IdentityMatrix<5>);
+
+    constexpr auto matrix1 = Matrix4x4{ 5, -2,  2, 7,
+                                        1,  0,  0, 3,
+                                       -3,  1,  5, 0,
+                                        3, -1, -9, 4, };
+
+    auto mat{ matrix1.adjoint() };
+
+    constexpr auto det{ matrix1.determinant() };
+
+    for (auto&& row : mat)
+    {
+        for (auto&& ele : row)
+        {
+            ele /= det;
+        }
+    }
+
+    EXPECT_EQ(mat, matrix1.inverse());
 }
