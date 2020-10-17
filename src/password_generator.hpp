@@ -25,6 +25,10 @@ using namespace std::string_view_literals;
 namespace password_generator
 {
 
+/**
+ * @brief enumeration for possible numbers that can be achieved from a die throw
+ *
+ */
 enum class die_number
 {
     one = 1,
@@ -38,11 +42,14 @@ enum class die_number
 
 using die_result_t = bound_value<die_number::one, die_number::six>;
 
-
+/**
+ * @brief Struct to hold information about the valid characters for random passphrase generation
+ *
+ */
 struct char_valid_info_s
 {
-    bool valid{ false };
-    std::string_view characters{};
+    bool valid{ false }; // whether the characters included in the struct is valid or not
+    std::string_view characters{}; // the characters to include/exclude based on the valid flag
 };
 
 
@@ -50,6 +57,13 @@ constexpr auto all_special_characters = char_valid_info_s{};
 constexpr auto no_special_characters = char_valid_info_s{ true };
 
 
+/**
+ * @brief Get a randomly generated string
+ *
+ * @param i_length required length of string
+ * @param i_character_info valid/invalid special characters
+ * @return random string
+ */
 auto get_random_string(int i_length, char_valid_info_s i_character_info) noexcept
 {
     constexpr auto first_grid = std::array<char, 36>
@@ -111,12 +125,12 @@ auto get_random_string(int i_length, char_valid_info_s i_character_info) noexcep
     {
         auto grid_number{ static_cast<int>(_1) % 2 == 0 ? static_cast<int>(_1) / 2 : (static_cast<int>(_1) + 1) / 2 };
 
-        auto& grid{ grids[grid_number - 1] };
+        auto& grid{ grids.at(grid_number - 1) };
 
         auto row_num{ static_cast<int>(_3) - 1 };
         auto col_num{ static_cast<int>(_2) - 1 };
 
-        return grid[row_num * 6 + col_num];
+        return grid.at(row_num * 6 + col_num);
     };
 
     auto random_str{ ""s };
