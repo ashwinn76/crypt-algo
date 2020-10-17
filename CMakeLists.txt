@@ -6,7 +6,7 @@ include(gtest.cmake)
 
 include_directories(src)
 
-set(COVERAGE OFF CACHE BOOL "Coverage")
+
 
 find_package (Threads)
 add_subdirectory(tests)
