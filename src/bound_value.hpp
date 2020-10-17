@@ -128,12 +128,15 @@ public:
 
 
     /**
-     * @brief explicit conversion operator for contained value_type
+     * @brief explicit conversion operator for contained value
      *
-     * @return value_type
+     * @tparam _T new type
+     * @return value in converted type
      */
-    constexpr operator value_type() const noexcept
+    template <typename _T>
+    constexpr operator _T() const noexcept
     {
-        return value();
+        static_assert(std::is_arithmetic_v<_T>, "Cannot cast to a non arithmetic type!");
+        return static_cast<_T>(value());
     }
 };
