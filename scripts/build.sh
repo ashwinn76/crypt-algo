@@ -1,5 +1,5 @@
 if [ "$1" -eq "1" ]; then
-  if [ d "build" ]; then
+  if [ ! -d "build" ]; then
     rm -r build
   fi
 fi
