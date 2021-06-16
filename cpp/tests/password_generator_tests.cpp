@@ -11,7 +11,7 @@
 
 #include "gtest/gtest.h"
 
-#include "../src/password_generator.hpp"
+#include "passwordlib/password_generator.hpp"
 
 
 TEST(PasswordTests, AllValidSpecialCharacters)

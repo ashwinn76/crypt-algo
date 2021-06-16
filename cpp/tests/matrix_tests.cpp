@@ -12,13 +12,11 @@
 
 #include "gtest/gtest.h"
 
-#include "../src/type_trait_utils.hpp"
-#include "../src/bound_value.hpp"
+#include "type_trait_utils.hpp"
+#include "bound_value.hpp"
 
-#include "../src/macro_utils.hpp"
-
-
-#include "../src/matrix.hpp"
+#include "macro_utils.hpp"
+#include "matrix.hpp"
 
 
 TEST(MatrixTests, MatrixTemplatesTests)

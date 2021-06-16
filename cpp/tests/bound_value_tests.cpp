@@ -12,7 +12,7 @@
 
 #include "gtest/gtest.h"
 
-#include "../src/bound_value.hpp"
+#include "bound_value.hpp"
 
 TEST(BoundValueTests, BoundValueTemplateTests)
 {

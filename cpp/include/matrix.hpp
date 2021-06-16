@@ -15,14 +15,13 @@
 
 #include "type_trait_utils.hpp"
 
-
- /**
-  * @brief Generic matrix class
-  *
-  * @tparam _Rows Number of rows
-  * @tparam _Columns Number of columns
-  * @tparam _T Type of matrix element
-  */
+/**
+ * @brief Generic matrix class
+ *
+ * @tparam _Rows Number of rows
+ * @tparam _Columns Number of columns
+ * @tparam _T Type of matrix element
+ */
 template <uint64_t _Rows, uint64_t _Columns, typename _T = double>
 class matrix
 {

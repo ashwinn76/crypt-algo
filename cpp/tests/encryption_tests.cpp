@@ -11,8 +11,9 @@
 
 #include "gtest/gtest.h"
 
-#include "../src/bound_value.hpp"
-#include "../src/encryption_key.hpp"
+#include "bound_value.hpp"
+
+#include "passwordlib/encryption_key.hpp"
 
 
 static const auto key = std::string{ "this_is_a_random_encryptionkey__" };

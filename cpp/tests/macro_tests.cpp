@@ -11,7 +11,7 @@
 
 #include "gtest/gtest.h"
 
-#include "../src/macro_utils.hpp"
+#include "macro_utils.hpp"
 
 
 TEST(MacroTests, NumericConverterTests_64bit)
