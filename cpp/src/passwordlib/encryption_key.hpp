@@ -29,7 +29,7 @@ constexpr auto IdealKeySize = 32_ui64;
 
 auto get_additional_character()
 {
-    auto random_pos{ get_random_value(0_ui64, EncryptionHelperKey.size()) };
+    auto random_pos{ get_random_value(0_sz, EncryptionHelperKey.size()) };
 
     return EncryptionHelperKey.at(random_pos);
 }
